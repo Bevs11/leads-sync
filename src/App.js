@@ -55,7 +55,7 @@ export default function App() {
       setLoading(false);
       return;
     }
-    console.log(validJsonData);
+
     try {
       const res = await axios.post(
         'http://localhost:8000/leads/batch/',
@@ -88,8 +88,6 @@ export default function App() {
   };
 
   const validateFile = (file) => {
-    console.log('Validating file:', file);
-    console.log('file type:', typeof file);
     if (!file || !Array.isArray(file)) {
       setUploadMessage('Please upload a valid CSV file.');
       return;
@@ -97,12 +95,8 @@ export default function App() {
     const validData = [];
     file.forEach((item) => {
       const email = item.email?.trim();
-      const phone = item.phone?.replace(/\s+/g, '');
-
       const emailValid = email ? /^[\w.-]+@[\w.-]+\.\w+$/.test(email) : false;
-      const phoneValid = phone ? /^\+?[1-9]\d{1,14}$/.test(phone) : false;
-
-      if (emailValid || phoneValid) {
+      if (emailValid) {
         validData.push(item);
       }
     });
@@ -123,8 +117,8 @@ export default function App() {
     <div style={{ padding: '2em', maxWidth: '600px', margin: 'auto' }}>
       <h3 style={{ textAlign: 'center' }}>Upload CSV File here!</h3>
       <div style={{ width: '100%', textAlign: 'center', marginBottom: '1em' }}>
-        Please make sure that there is atleast a valid email or phone number.
-        Invalid email or contact number would not me imported to CRM
+        Please make sure that there is a valid email. Invalid email would not me
+        imported to CRM.
       </div>
       <div className="file-upload" onClick={handleClick}>
         <input
@@ -137,9 +131,7 @@ export default function App() {
         {fileName ? (
           <p className="file-name">Selected file: {fileName}</p>
         ) : (
-          <p className="file-placeholder">
-            Click or drag and drop a CSV file here
-          </p>
+          <p className="file-placeholder">Click to upload CSV file</p>
         )}
       </div>
       <button className="sync_button" onClick={handleSyncToHubspot}>
