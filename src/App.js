@@ -42,7 +42,16 @@ export default function App() {
     return lines.slice(1).map((row) => {
       const values = row.split(',');
       return headers.reduce((obj, header, index) => {
-        obj[header.trim()] = values[index]?.trim() || '';
+        const value = values[index]?.trim() || '';
+
+        if (header.toLowerCase() === 'name') {
+          // Split name into first and last
+          const [first, ...rest] = value.split(' ');
+          obj['firstname'] = first || '';
+          obj['lastname'] = rest.join(' ') || '';
+        } else {
+          obj[header] = value;
+        }
         return obj;
       }, {});
     });
