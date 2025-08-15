@@ -19,6 +19,7 @@ export default function App() {
   // }, [jsonData]);
 
   const handleFileUpload = (e) => {
+    setResponseData(null);
     const file = e.target.files[0];
     if (!file) return;
     const reader = new FileReader();
@@ -141,11 +142,10 @@ export default function App() {
       {uploadMessage && (
         <div className="message-container">{uploadMessage}</div>
       )}
-      {responseData && (
+      {responseData && !loading && (
         <div
           className={` message-container ${successSync ? 'response-success' : 'response-error'}`}
         >
-          <div>Response Data:</div>
           <div>{responseData}</div>
         </div>
       )}
