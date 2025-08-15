@@ -138,7 +138,7 @@ export default function App() {
     <div style={{ padding: '2em', maxWidth: '600px' }}>
       <h3 style={{ textAlign: 'center' }}>Upload CSV File here!</h3>
       <div style={{ width: '100%', textAlign: 'center', marginBottom: '1em' }}>
-        Please make sure that there is a valid email. Invalid email would not me
+        Please make sure that there is a valid email. Invalid email would not be
         imported to CRM.
       </div>
       <div className="file-upload" onClick={handleClick}>
