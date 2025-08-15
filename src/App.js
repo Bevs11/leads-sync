@@ -9,7 +9,6 @@ export default function App() {
   const [fileName, setFileName] = useState('');
   const fileInputRef = useRef(null);
   const [uploadMessage, setUploadMessage] = useState('');
-  const [validJsonData, setValidJsonData] = useState([]);
   const [loading, setLoading] = useState(false);
 
   const handleFileUpload = (e) => {
@@ -63,7 +62,7 @@ export default function App() {
     try {
       const res = await axios.post(
         'http://localhost:8000/leads/batch/',
-        validJsonData
+        jsonData
       );
 
       setResponseData(
@@ -115,15 +114,13 @@ export default function App() {
       seen.push(item.email);
     });
 
-    setValidJsonData(validData);
     if (validData?.length == file.length) {
       setUploadMessage(
         `You are trying to import ${validData.length} valid records.`
       );
     }
 
-    let warningMessage = `You are trying to import ${validData.length} valid records out of ${file.length} total records. If this is incorrect, please check your CSV file.`;
-    console.log('Invalid Data:', invalidData);
+    let warningMessage = `You are trying to import ${file.length} contacts to CRM. \nWarning: Please review the following records before proceeding:\n`;
     if (invalidData.length > 0) {
       warningMessage += `\nInvalid records found:`;
       invalidData.forEach((row) => {
