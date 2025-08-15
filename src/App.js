@@ -73,15 +73,13 @@ export default function App() {
       );
 
       setResponseData(
-        `Import Successful! Created ${res.data.created_contacts} contacts. Updated ${res.data.updated_contacts} contacts.`
+        `Import Successful! Created ${res.data.created_count} contacts. Updated ${res.data.updated_count} contacts. And ${res.data.error_count} failed import.`
       );
       setSuccessSync(true);
       console.log('Data synced successfully');
     } catch (error) {
       console.error('Error syncing data:', error);
-      setResponseData(`
-        Import Unsuccessful! Please try again.
-      `);
+      setResponseData(`Import Unsuccessful! Please try again.`);
     }
     setLoading(false);
   };
@@ -104,6 +102,7 @@ export default function App() {
     }
     const validData = [];
     const invalidData = [];
+    const seen = [];
     file.forEach((item) => {
       const email = item.email?.trim();
       if (!email) {
@@ -114,7 +113,12 @@ export default function App() {
         invalidData.push({ item: item, error: 'Invalid email format' });
         return;
       }
+      if (seen.includes(email)) {
+        invalidData.push({ item: item, error: 'Duplicate email' });
+        return;
+      }
       validData.push(item);
+      seen.push(item.email);
     });
 
     setValidJsonData(validData);
@@ -129,7 +133,7 @@ export default function App() {
     if (invalidData.length > 0) {
       warningMessage += `\nInvalid records found:`;
       invalidData.forEach((row) => {
-        warningMessage += `\n${row.item.firstname || ''} ${row.item.lastname || ''} ${row.item.email || ''} - ${row.error || ''}`;
+        warningMessage += `\n${row.item.firstname || ''} ${row.item.lastname || ''}, ${row.item.email || 'No email'} - ${row.error || ''}`;
       });
     }
 
