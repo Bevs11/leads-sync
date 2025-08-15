@@ -82,6 +82,8 @@ button.sync_button {
   border-color: #888;
   border-style: solid;
   border-width: 1px;
+  white-space: pre-wrap;
+  word-break: break-word;
 }
 
 .response-success {

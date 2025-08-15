@@ -61,7 +61,7 @@ export default function App() {
     setLoading(true);
     if (!jsonData) {
       console.error('No data to sync');
-      setUploadMessage('Please upload a CSV file first.');
+      setUploadMessage('Please upload a CSV file.');
       setLoading(false);
       return;
     }
@@ -72,9 +72,9 @@ export default function App() {
         validJsonData
       );
 
-      setResponseData(`
-        Import Successful! Created ${res.data.created_contacts} contacts. Updated ${res.data.updated_contacts} contacts.
-      `);
+      setResponseData(
+        `Import Successful! Created ${res.data.created_contacts} contacts. Updated ${res.data.updated_contacts} contacts.`
+      );
       setSuccessSync(true);
       console.log('Data synced successfully');
     } catch (error) {
@@ -103,12 +103,18 @@ export default function App() {
       return;
     }
     const validData = [];
+    const invalidData = [];
     file.forEach((item) => {
       const email = item.email?.trim();
-      const emailValid = email ? /^[\w.-]+@[\w.-]+\.\w+$/.test(email) : false;
-      if (emailValid) {
-        validData.push(item);
+      if (!email) {
+        invalidData.push({ item: item, error: 'Email is required' });
+        return;
       }
+      if (!/^[\w.-]+@[\w.-]+\.\w+$/.test(email)) {
+        invalidData.push({ item: item, error: 'Invalid email format' });
+        return;
+      }
+      validData.push(item);
     });
 
     setValidJsonData(validData);
@@ -118,13 +124,20 @@ export default function App() {
       );
     }
 
-    setUploadMessage(
-      `You are trying to import ${validData.length} valid records out of ${file.length} total records. If this is incorrect, please check your CSV file.`
-    );
+    let warningMessage = `You are trying to import ${validData.length} valid records out of ${file.length} total records. If this is incorrect, please check your CSV file.`;
+    console.log('Invalid Data:', invalidData);
+    if (invalidData.length > 0) {
+      warningMessage += `\nInvalid records found:`;
+      invalidData.forEach((row) => {
+        warningMessage += `\n${row.item.firstname || ''} ${row.item.lastname || ''} ${row.item.email || ''} - ${row.error || ''}`;
+      });
+    }
+
+    setUploadMessage(warningMessage);
   };
 
   return (
-    <div style={{ padding: '2em', maxWidth: '600px', margin: 'auto' }}>
+    <div style={{ padding: '2em', maxWidth: '600px' }}>
       <h3 style={{ textAlign: 'center' }}>Upload CSV File here!</h3>
       <div style={{ width: '100%', textAlign: 'center', marginBottom: '1em' }}>
         Please make sure that there is a valid email. Invalid email would not me
@@ -147,12 +160,14 @@ export default function App() {
       <button className="sync_button" onClick={handleSyncToHubspot}>
         {!loading ? 'Import to Hubspot' : 'Importing...'}
       </button>
-      <div></div>
       {uploadMessage && (
-        <div className="message-container">{uploadMessage}</div>
+        <div className="message-container" style={{ textAlign: 'left' }}>
+          {uploadMessage}
+        </div>
       )}
       {responseData && !loading && (
         <div
+          style={{ textAlign: 'center' }}
           className={` message-container ${successSync ? 'response-success' : 'response-error'}`}
         >
           <div>{responseData}</div>
