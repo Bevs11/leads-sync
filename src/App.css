@@ -1,0 +1,94 @@
+body {
+  background-color: white;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  font-size: 16px;
+  color: black;
+  font-family: 'Courier New', Courier, monospace;
+}
+
+button.sync_button {
+  background-color: #007bff;
+  border: none;
+  color: white;
+  padding: 15px 32px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 16px;
+  margin: 4px 2px;
+  border-radius: 8px;
+  cursor: pointer;
+}
+
+.container {
+  max-width: 600px;
+  margin: 2rem auto;
+  font-family: Arial, sans-serif;
+}
+
+.file-upload {
+  border: 2px dashed #888;
+  padding: 40px;
+  text-align: center;
+  cursor: pointer;
+  border-radius: 8px;
+  transition: border-color 0.3s;
+  margin-bottom: 1rem;
+}
+
+.file-upload:hover {
+  border-color: #007bff;
+}
+
+.file-name {
+  color: #333;
+}
+
+.file-placeholder {
+  color: #888;
+}
+
+.sync-button {
+  padding: 10px 20px;
+  background-color: #007bff;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.sync-button:hover {
+  background-color: #0056b3;
+}
+
+.json-preview {
+  background-color: #f4f4f4;
+  padding: 1em;
+  margin-top: 1em;
+  white-space: pre-wrap;
+  word-break: break-word;
+  border-radius: 5px;
+}
+
+.message-container {
+  margin-top: 2em;
+  padding: 1em;
+  border-radius: 5px;
+  text-align: center;
+  border-color: #888;
+  border-style: solid;
+  border-width: 1px;
+}
+
+.response-success {
+  background-color: #00b309 !important;
+  color: white;
+}
+.response-error {
+  background-color: #dc3545 !important;
+  color: white;
+}
