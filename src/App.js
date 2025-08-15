@@ -10,6 +10,7 @@ export default function App() {
   const fileInputRef = useRef(null);
   const [uploadMessage, setUploadMessage] = useState('');
   const [validJsonData, setValidJsonData] = useState([]);
+  const [loading, setLoading] = useState(false);
 
   // useEffect(() => {
   //   if (jsonData) {
@@ -47,8 +48,11 @@ export default function App() {
   };
 
   const handleSyncToHubspot = async () => {
+    setLoading(true);
     if (!jsonData) {
       console.error('No data to sync');
+      setUploadMessage('Please upload a CSV file first.');
+      setLoading(false);
       return;
     }
     console.log(validJsonData);
@@ -69,6 +73,7 @@ export default function App() {
         Import Unsuccessful! Please try again.
       `);
     }
+    setLoading(false);
   };
 
   const handleChange = (e) => {
@@ -138,7 +143,7 @@ export default function App() {
         )}
       </div>
       <button className="sync_button" onClick={handleSyncToHubspot}>
-        Import to Hubspot
+        {!loading ? 'Import to Hubspot' : 'Importing...'}
       </button>
       <div></div>
       {uploadMessage && (
