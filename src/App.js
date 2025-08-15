@@ -12,12 +12,6 @@ export default function App() {
   const [validJsonData, setValidJsonData] = useState([]);
   const [loading, setLoading] = useState(false);
 
-  // useEffect(() => {
-  //   if (jsonData) {
-  //     console.log('JSON Data:', jsonData);
-  //   }
-  // }, [jsonData]);
-
   const handleFileUpload = (e) => {
     setResponseData(null);
     const file = e.target.files[0];
